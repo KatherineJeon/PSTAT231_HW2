@@ -13,8 +13,9 @@ knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
 library(tidymodels)
 library(tidyverse)
-set.seed(365)
+set.seed(45)
 ```
+
 
 ## Questions
 
@@ -42,33 +43,51 @@ Question 3.
 step 1.
 ```{r}
 abalone_recipe <- recipe(age ~ ., data = abalone_train) %>% 
-  step_dummy(all_nominal_predictors())
-```
-
-step 2.
-```{r}
-
-```
-
-step 3.
-```{r}
-
-```
-
-step 4.
-```{r}
-
+  step_dummy(all_nominal_predictors()) %>% 
+  step_interact(terms = ~ starts_with("type"):shucked_weight + longest_shell:diameter + 
+                  shucked_weight:shell_weight) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors())
 ```
 
 
 Question 4.
+```{r}
+lm_model <- linear_reg() %>% 
+  set_engine("lm")
+
+lm_model
+```
 
 
+Question 5.
+```{r}
+lm_wflow <- workflow() %>% 
+add_model(lm_model) %>% 
+  add_recipe(abalone_recipe)
+
+lm_wflow
+```
 
 
+Question 6.
+```{r}
+lm_fit <- fit(lm_wflow, abalone_train)
+female_age <- data.frame(longest_shell = 0.50, diameter = 0.10, height = 0.30, whole_weight = 4, shucked_weight = 1, viscera_weight = 2, shell_weight = 1, type='F')
+
+predict(lm_fit, female_age)
+```
 
 
-
+Question 7.
+```{r}
+abalone_train_pred <- predict(lm_fit, new_data = abalone_train %>% select(-age))
+abalone_train_pred <- bind_cols(abalone_train_pred, abalone_train %>% select(age))
+rmse(abalone_train_pred, truth = age, estimate = .pred)
+abalone_metrics <- metric_set(rmse, rsq, mae)
+abalone_metrics(abalone_train_pred, truth = age, 
+                estimate = .pred)
+```
 
 
 Question 8.
