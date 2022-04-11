@@ -1,0 +1,85 @@
+---
+title: "HW2"
+output: html_document
+date: '2022-04-10'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(ggplot2)
+library(tidymodels)
+library(tidyverse)
+set.seed(365)
+```
+
+## Questions
+
+Question 1.
+```{r}
+abalone <- read.csv(file = 'data/abalone.csv')
+abalone['age'] <- abalone['rings'] + 1.5
+ggplot(abalone, aes(x = age)) + geom_histogram()
+
+```
+
+
+Question 2.
+```{r}
+abalone2 <- subset(abalone, select = -rings)
+abalone_split <- initial_split(abalone2, prop = 0.80,
+                                strata = age)
+abalone_train <- training(abalone_split)
+abalone_test <- testing(abalone_split)
+```
+
+
+Question 3.
+
+step 1.
+```{r}
+abalone_recipe <- recipe(age ~ ., data = abalone_train) %>% 
+  step_dummy(all_nominal_predictors())
+```
+
+step 2.
+```{r}
+
+```
+
+step 3.
+```{r}
+
+```
+
+step 4.
+```{r}
+
+```
+
+
+Question 4.
+
+
+
+
+
+
+
+
+
+Question 8.
+$Var(\epsilon)$
+
+Question 9.
+If we take $\hat{f}(x_0) = E[Y|X=x_0]$,
+then $E[(\hat{f}(x_0) - E\hat{f}(x_0))^2] = 0$ and $[E[\hat{f}(x_0)] - f(x_0)]^2 = 0$.
+
+
+
+Question 10. 
+
+
