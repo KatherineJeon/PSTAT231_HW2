@@ -98,16 +98,30 @@ $Var(\epsilon)$
 Question 9.
 If we take $\hat{f}(x_0) = E[Y|X=x_0]$,
 then $E[(\hat{f}(x_0) - E\hat{f}(x_0))^2] = 0$ and $[E[\hat{f}(x_0)] - f(x_0)]^2 = 0$.
-
+-> according to lecture note
 
 
 Question 10. 
 $$
 \begin{aligned}
-E[(y_0) - \hat{f}((x_0))^2] &= E[f(x) + \epsilon - \hat{f}((x_0))^2] \\
-&= E[f(x) - \hat{f}(x_0)^2] + E{\epsilon^2} +2E[(f(x_0) - \hat{f}(X))\epsilon]\\
-&= 
+E[(y_0) - \hat{f}(x_0))^2] &= E[f(x_0) + \epsilon - \hat{f}((x_0))^2] \\
+&= E[f(x_0) - \hat{f}(x_0)^2] + E[{\epsilon^2}] +2E[(f(x_0) - \hat{f}(X_0))\epsilon]\\
+&= E[f(x_0) - \hat{f}(x_0)^2] + E[{\epsilon^2}] +2E[(f(x_0) - \hat{f}(X_0))]E[\epsilon] \\
+&= E[(f(x_0) - \hat{f}(x_0))^2] + \sigma_{\epsilon}^2 \\
+&= E[(f(x_0) - \hat{f}(x_0))^2] + Var(\epsilon)
 \end{aligned}
 $$
 
-
+$$
+\begin{aligned}
+E[(f(x_0) - \hat{f}(x_0))^2] &=  E[(f(x_0) - E[\hat{f}(x_0)]) - (\hat{f}(x_0) - E[\hat{f}(x_0)])^2] \\
+&= E[(E[\hat{f}(x_0)] - f(x_0))^2] + E[(\hat{f}(x_0) - E[(\hat{f}(x_0) - E[\hat{f}(x_0)])^2]  - 2E[(f(x_0) -E[\hat{f}(x_0)])(\hat{f}(x_0) - E[\hat{f}(x_0)])] \\
+&= (E[\hat{f}(x_0)] - f(x_0))^2 + E[(\hat{f}(x_0) - E[\hat{f}(x_0)])^2] -2(f(x_0) - E[\hat{f}(x_0)])E[(\hat{f}(x_0) - E[\hat{f}(x_0)])] \\
+&= bias[\hat{f}(x_0)]^2 + var(\hat{f}(x_0)) - 2(f(x_0) - E[\hat{f}(x_0)])(E[\hat{f}(x_0)] - E[\hat{f}(x_0)]) \\
+&= bias[\hat{f}(x_0)]^2 + var(\hat{f}(x_0))
+\end{aligned}
+$$
+Combining both results,
+$$
+E[(y_0) - \hat{f}(x_0))^2] = Var(\hat{f}(x_0)) + [Bias(\hat{f}(x_0))]^2 + Var(\epsilon)
+$$
